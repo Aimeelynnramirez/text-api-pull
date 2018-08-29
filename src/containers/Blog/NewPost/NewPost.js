@@ -2,54 +2,85 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import './NewPost.css';
-
+import FullPost from '../FullPost/FullPost';
 class NewPost extends Component {
-    state = {
-        title: '',
-        content: '',
-        author: 'Aimee',
-        submitted: false
+    constructor(props) {
+        super(props);
+    this.state = {
+        textTitle: '',
+        textKeyPhrases: '',
+        submitted: false,
+        dataStore: [
+    {
+        title: 'Title 2',
+        keyPhrases: 'here',
     }
+     ],
+       
+     keyStore: 
+     [   {    
+       keyPhrases: 'key'
+    
+     }  
+   ],
+ 
+   };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyChange = this.handleKeyChange.bind(this);
 
-    componentDidMount () {
-        console.log(this.props);
-    }
-
+}
+   
+    handleChange(e) {
+        this.setState({ 
+            textTitle: e.target.value
+        })
+    }  
+    handleKeyChange(e) {
+        this.setState({ 
+            textKeyPhrases: e.target.value
+        })
+    }          
+//binding the data for that to pass in post
     postDataHandler = () => {
         const data = {
-            title: this.state.title,
-            body: this.state.content,
-            author: this.state.author
+        title: this.state.textTitle,
+        keyPhrases: this.state.textKeyPhrases,
         };
-        axios.post('/posts', data)
+        let store = this.state.dataStore;
+        store.push(data);
+        console.log(this, 'look');
+        axios.post('/key_phrases', data)
             .then(response => {
                 console.log(response);
-                this.props.history.push('/posts');
+                this.props.history.push('/key_phrases');
                 //replace does the same a redirecting...
-                //this.setState({ submitted:true});
+                 this.setState({
+                    dataStore:store,
+                    submitted:true
+                });
             });
     }
 
     render () {
+
+            const dataList= this.state.dataStore;
+            const keyList = this.state.keyStore;
         let redirect = null;
         if (this.state.submitted) {
-            redirect = <Redirect to ="/posts" />;
+            redirect = <Redirect to ="/key_phrases" />;
         }
         return (
             <div className="NewPost">
                 {redirect}
-                <h1>Add a Post</h1>
+
+                <h1>Add a Message</h1>
                 <label>Title</label>
-                <input type="text" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} />
-                <label>Content</label>
-                <textarea rows="4" value={this.state.content} onChange={(event) => this.setState({content: event.target.value})} />
-                <label>Author</label>
-                <select value={this.state.author} onChange={(event) => this.setState({author: event.target.value})}>
-                    <option value="Max">Max</option>
-                    <option value="Aimee">Aimee</option>
-                    
-                </select>
-                <button onClick={this.postDataHandler}>Add Post</button>
+                <input type="text" value={this.state.title} onChange={ this.handleChange } />
+                <label>keyPhrases pull input</label>
+                <textarea rows="5" value={this.state.keyPhrases} onChange={ this.handleKeyChange } />
+                <button onClick={this.postDataHandler}>Add this Message </button>
+                <span> {console.log(dataList)}</span> 
+<FullPost text={this.state.title}/>
             </div>
         );
     }

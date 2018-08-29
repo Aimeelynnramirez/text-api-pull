@@ -5,56 +5,68 @@ import './FullPost.css';
 
 class FullPost extends Component {
     state = {
-        loadedPost: null
+        title:["Title 1", 
+        "Title 2", "Title 3"],
+        keyPhrases: [ 'What time is the clock ticking?',
+        'Happy Birthday, May all your wishes come true.',
+        'This is a great day to date the time.']
     }
 
-    componentDidMount () {
-        console.log(this.props);
-        this.loadData();
-    }
 
-    componentDidUpdate() {
-        this.loadData();
-    }
-
-    loadData () {
-        if ( this.props.match.params.id ) {
-            if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== +this.props.match.params.id) ) {
-                axios.get( '/posts/' + this.props.match.params.id )
+    addData () {
+/*         if ( this.props.match.params.id ) {
+            if ( !this.state.loadKeyPhrases || (this.state.loadKeyPhrases && this.state.loadKeyPhrases.id !== +this.props.match.params.id) ) { */
+                axios.get(  '/key_phrases'  )
                     .then( response => {
-                        // console.log(response);
-                        this.setState( { loadedPost: response.data } );
+                         console.log(response);
+                        this.setState( { keyPhrases: response.data } );
                     } );
             }
-        }
-    }
+    
+    
 
     deletePostHandler = () => {
-        axios.delete('/posts/' + this.props.match.params.id)
+        axios.delete( '/key_phrases')
             .then(response => {
+                alert('Deleting!',);
                 console.log(response);
             });
     }
 
     render () {
-        let post = <p style={{ textAlign: 'center' }}>Please select a Post!</p>;
+        return (
+
+   /*      let keyPhrases = <p style={{ textAlign: 'center' }}>Please select a Post!</p>;
         if ( this.props.match.params.id ) {
-            post = <p style={{ textAlign: 'center' }}>Loading...!</p>;
+            keyPhrases = <p style={{ textAlign: 'center' }}>Loading...!</p>;
         }
-        if ( this.state.loadedPost ) {
-            post = (
+        if ( this.state.loadKeyPhrases) { */
+        /*   keyPhrases = ( */
                 <div className="FullPost">
-                    <h1>{this.state.loadedPost.title}</h1>
-                    <p>{this.state.loadedPost.body}</p>
+                <div className="cards">
+                <h1> {this.state.title[0]}</h1>
+                    <p>{this.state.keyPhrases[0]}</p>
                     <div className="Edit">
                         <button onClick={this.deletePostHandler} className="Delete">Delete</button>
+                        </div>
+                    </div>
+                    <div className="cards">
+                        <h1>{this.state.title[1]}</h1>
+                    <p>{this.state.keyPhrases[1]}</p>
+                    <div className="Edit">
+                        <button onClick={this.deletePostHandler} className="Delete">Delete</button>
+                        </div>
+                    </div>
+                    <div className="cards">
+                    <h1>{this.state.title[2]}</h1>
+                    <p>{this.state.keyPhrases[2]}</p>
+                    <div className="Edit">
+                        <button onClick={this.deletePostHandler} className="Delete">Delete</button>
+                        </div>
                     </div>
                 </div>
-
             );
-        }
-        return post;
     }
 }
-
+ 
 export default FullPost;

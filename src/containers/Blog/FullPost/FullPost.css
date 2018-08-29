@@ -1,13 +1,16 @@
 .FullPost {
     width: 80%;
     margin: 20px auto;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 3px #ccc;
+ 
     text-align: center;
 }
 
-.Edit {
-
+.cards{
+    width: 80%;
+    margin: 20px auto;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    text-align: center;
 }
 
 .Edit label {
@@ -20,7 +23,7 @@
     background-color: transparent;
     cursor: pointer;
     outline: none;
-    color: #fa923f;
+    color: #0973b4;
 }
 
 .Edit button:hover,
